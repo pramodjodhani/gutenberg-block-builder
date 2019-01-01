@@ -1,0 +1,105 @@
+
+.formDiv .frmb-control li[data-type="autocomplete"],
+.formDiv .frmb-control li[data-type="button"],
+.formDiv .frmb-control li[data-type="date"],
+.formDiv .frmb-control li[data-type="header"],
+.formDiv .frmb-control li[data-type="hidden"],
+.formDiv .frmb-control li[data-type="number"],
+.formDiv .frmb-control li[data-type="paragraph"] {
+	display: none;
+}
+
+
+.form-group.required-wrap ,
+.form-group.access-wrap ,
+.form-group.description-wrap ,
+.form-group.inline-wrap ,
+.form-group.other-wrap ,
+.form-group.description-wrap ,
+.form-group.maxlength-wrap {
+	display: none !important;
+}
+
+
+
+button.clear-all.btn.btn-danger {
+    display: none;
+}
+
+button.btn.btn-primary.save-template {
+    display: none;
+}
+
+
+.GTS_main_div {
+    background: #fff;
+    border: 1px solid #9c9c9c;
+    /* border-top: 0; */
+}
+
+p.stg_heading {
+    background: rgb(254, 240, 0);
+    /* text-align: center; */
+    padding: 7px 17px;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 0;
+}
+
+.stg_form_div {
+    padding: 12px;
+}
+
+.stg_single_row {
+    margin-bottom: 24px;
+}
+
+span.stg_toggle_icon {
+    position: absolute;
+    right: 17px;
+    font-size: 21px;
+    top: 1px;
+}
+
+.stg_single_row input[type=text], 
+.stg_single_row textarea, 
+.stg_single_row select, 
+.stg_single_row input[type=password], 
+.stg_single_row input[type=number], 
+.stg_single_row input[type=email] {
+    width: 150px;
+}
+
+.stg_error {
+    color: red;
+}
+
+.stg_error_input {
+    border: 1px solid red !important;
+}
+
+span.stg_desc {
+    font-size: 11px;
+}
+
+p.stg_heading {
+    background: #f3f4f5;
+    /* text-align: center; */
+    padding: 7px 17px;
+    cursor: pointer;
+    position: relative;
+    margin-top:0;
+}
+
+.stg_block_el {
+    display: block;
+}
+
+.radio-group .fb-radio label {
+    display: inline;
+}
+
+.checkbox-group .fb-checkbox label {
+    display: inline;
+    
+}

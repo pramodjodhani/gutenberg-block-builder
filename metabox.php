@@ -42,7 +42,7 @@ function STG_display_callback($post) {
 			<div class="stg_single_row">
 				<label >
 					Dashicon <br>
-					<input type="text" name="stg_dashicon" class="stg_dashicon" required="" value="<?php echo $stg_dashicon; ?>" Placeholder="dashicons-universal-access"    /> <br>
+					<input type="text" name="stg_dashicon" class="stg_dashicon  dashicons-picker" required="" value="<?php echo $stg_dashicon; ?>" Placeholder="dashicons-universal-access"    /> <br>
 					<span class="stg_desc stg_namespace_error">See all dashicons <a href="https://developer.wordpress.org/resource/dashicons/" target=_blank>here</a>.</span>
 				</label>	
 			</div>
@@ -51,6 +51,8 @@ function STG_display_callback($post) {
 				<label >
 					PHP callback function:<br>
 					<input type="text" name="stg_php_function" class="stg_php_function" required="" value="<?php echo $stg_php_function; ?>" Placeholder="myblock_frontend()" /> <br>
+					<span class="stg_desc">Define this function in functions.php file of your theme/child theme.</span>
+					
 				</label>	
 			</div>
 			
@@ -100,3 +102,28 @@ function STG_save_meta_box( $post_id ) {
 	//echo $_POST["stg_form_json"]; exit;
 }
 add_action( 'save_post', 'STG_save_meta_box' );	
+
+
+function stg_admin_notice__success() {
+    
+    global $post;
+    $screen = get_current_screen();
+    
+    if($screen->id == "gutenblock")  {
+    
+    	$stg_php_function = get_post_meta($post->ID ,"stg_php_function" , true);
+	    $stg_php_function = stg_trim_fn($stg_php_function); //removes  "()" from function name
+    
+    	if($stg_php_function ) {
+    		//echo "Aaaassa"; exit;
+    		if(!function_exists($stg_php_function)) {
+			    ?>
+			    <div class="notice notice-error is-dismissible">
+			        <p><b><?php echo $stg_php_function; ?></b> function is not defined. </p>
+			    </div>
+			    <?php
+    		}	
+    	}
+    }
+}
+add_action( 'admin_notices', 'stg_admin_notice__success' );

@@ -35,7 +35,7 @@ class Shortcode_guten {
 			registerBlockType( '<?php echo $this->namespace; ?>', {
 			    title: '<?php echo $this->title; ?>',
 
-			    icon: '<?php echo $this->icon; ?>',
+			    icon: '<?php echo $this->get_icon(); ?>',
 
 			    category: '<?php echo $this->category; ?>',
 				
@@ -45,11 +45,29 @@ class Shortcode_guten {
 		return ob_get_clean();
 	}
 
+	function get_icon() {
+
+		if(strpos($this->icon, "dashicons-") !== false) {
+			$icon = str_replace("dashicons-", "", $this->icon);
+		}
+
+		if($icon) {
+			return sanitize_title($icon);
+		}
+		else {
+			return "welcome-write-blog";
+		}
+
+
+	}
 
 	function get_attr() {
 		$json_str = $this->json;
 		$json = json_decode($json_str);
 		$ret = array();
+		
+		if(!is_array($json)) $json = array();  //if no value of json, then make it empty error
+
 		foreach($json as $j) {
 			$name = $this->clean($j->name);
 			
@@ -87,9 +105,26 @@ class Shortcode_guten {
 
 			$ret .= $this->_get_edit_onchange_fn();
 			
+			$el_generated_by_very_complex = $this->_get_edit_elements();
 
+			$ret .= "
+					if(!props.isSelected) {
+						
+						return(
+							el(wp.components.ServerSideRender,{
+					                block: '{$this->namespace}',
+					                //attributes:  props.attributes
+					                ".$this->attributes_for_server()."
+								}
+							)
+						)
+	
+					}
+					else {
+						$el_generated_by_very_complex
+					}
+					";
 
-			$ret .= $this->_get_edit_elements();
 
 		}
 
@@ -100,11 +135,21 @@ class Shortcode_guten {
 
 	}
 
+	function attributes_for_server() {
+		$ret = "";
+		$json_str = $this->json;
+		$fields = json_decode($json_str);
+		foreach($fields as $field) {
+			$ret .= $field->name.": props.".$field->name.",";
+		}
+		return $ret;
+	}
+
 	function _get_edit_read_fields_values() {
 		$ret = "";
 		$json_str = $this->json;
 		$fields = json_decode($json_str);
-		$ret .= "\n console.log(props.attributes) \n";
+		$ret .= "\n console.log(props) \n";
 		foreach($fields as $field) {
 			$field->name = $this->clean($field->name);
 
@@ -126,8 +171,8 @@ class Shortcode_guten {
 	}
 
 	function clean($string) {
-	   $string = str_replace(' ', '_', $string); // Replaces all spaces with hyphens.
-	   $string = str_replace('-', '_', $string); // Replaces all spaces with hyphens.
+	   $string = str_replace(' ', '_', $string); // Replaces all spaces with underscore.
+	   $string = str_replace('-', '_', $string); // Replaces all hyphens with underscore.
 
 	   return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 	}
@@ -268,7 +313,6 @@ class Shortcode_guten {
 
 		$json_str = $this->json;
 		$fields = json_decode($json_str);
-		//print_r($fields); exit;
 		
 		foreach($fields as $field) {
 

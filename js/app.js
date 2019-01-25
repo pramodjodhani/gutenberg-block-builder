@@ -3,15 +3,20 @@ jQuery(document).ready(function($) {
 	
 	var formdata = $("#stg_form_json").val();
 	//alert(formdata);
-	var options = {};
 	
+	var options = {
+		disabledAttrs: [ 'access', 'className', 'description' , 'inline', 'max' , 'maxlength' , 'multiple', 'toggle' , 'value' , 'required' , 'rows'],
+		onFieldAdd: function(fieldId) {
+				  	alert("fieldId")
+				  },
+	};
+
 	if(formdata) {
-		//alert("here");
 		options.defaultFields = JSON.parse(formdata);
 	}
 
 	console.log(options);
-	var stgFormBuilder = $('.formDiv').formBuilder(options);
+	stgFormBuilder = $('.formDiv').formBuilder(options);
 	
 	window.setTimeout(() => {
 
@@ -29,6 +34,24 @@ jQuery(document).ready(function($) {
 	$("form[name=post]").submit(() => {
 		var json = stgFormBuilder.actions.getData();
 		$("#stg_form_json").val(JSON.stringify(json));
+		
+		//check for invalid name 
+		for(i = 0; i< json.length; i++) {
+			let field = json[i];
+			let name = field.name;
+			if(!name) {
+				alert(field.label+" field doesn't have a name.");
+				jQuery('.formDiv').formBuilder('toggleFieldEdit', i);	
+				return false; 				
+			}
+			if(name.includes("-")) {
+				alert(field.label+" field has invalid name. Cannot contain - ");
+				jQuery('.formDiv').formBuilder('toggleFieldEdit', i)	
+				return false; 
+			}
+		} 
+	
+
 	})
 	
 	$(".stg_namespace").change(()=> {
@@ -53,5 +76,6 @@ jQuery(document).ready(function($) {
 			$(this).val(v+"()");	
 		}
 	})
+	
 
 })

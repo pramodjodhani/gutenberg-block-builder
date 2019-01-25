@@ -12,6 +12,7 @@ define('STG_FILE' , __FILE__);
 define('STG_URL' , plugins_url("" , STG_FILE)."/" );
 
 
+require_once "lib/util.php";
 require_once "admin/init.php";
 require_once "lib/STG.class.php";
 require_once "metabox.php";
@@ -25,6 +26,7 @@ class STG_Main {
 		add_action( 'wp_enqueue_scripts', array($this , "front_scripts") );
 		add_action( 'admin_enqueue_scripts', array($this , "backend_scripts") );
 		add_action( 'init', array($this , "register_gutenblock") );
+		add_action( 'init', array($this , "register_gutenblock_posttype") );
 		add_action("admin_footer" , array($this , "generate_gutenberg_blocks_code"));
 	}
 	
@@ -37,9 +39,16 @@ class STG_Main {
 	function backend_scripts() {
 	    wp_enqueue_style( 'stg-css-admin', plugins_url( "/css/adminstyle.css", __FILE__ ) );
 		wp_enqueue_script( 'stg-js-admin', plugins_url( "/js/common.js", __FILE__ ) , array(), '1.0.0', true);
+
+		$css = plugin_dir_url( __FILE__ ) . 'css/dashicons-picker.css';
+    	wp_enqueue_style( 'dashicons-picker', $css, array( 'dashicons' ), '1.0' );
+
+		$js = plugin_dir_url( __FILE__ ) . 'js/dashicons-picker.js';
+		wp_enqueue_script( 'dashicons-picker', $js, array( 'jquery' ), '1.0' );
+
 	}
 
-	function register_gutenblock() {
+	function register_gutenblock_posttype() {
 		$args = array(
 			'label'             => "Guten Block",
 	        'description'        => 'Create Guten block from shortcodes',
@@ -57,6 +66,33 @@ class STG_Main {
 		);
 
 		register_post_type( 'gutenblock', $args );
+	}
+
+	function register_gutenblock() {
+		$qry = new WP_Query(array(
+							"post_type"=>"gutenblock",
+							"posts_per_page" => 20,
+							"post_status" => "publish"
+						));
+
+		while($qry->have_posts()) {
+			$qry->the_post();
+
+			$post_id = get_the_ID();
+			
+			$stg_namespace = get_post_meta($post_id , "stg_namespace" , true);
+			$stg_php_function = get_post_meta($post_id , "stg_php_function" , true);
+
+			$stg_php_function = stg_trim_fn($stg_php_function);
+
+			if(function_exists($stg_php_function)) {
+				
+				register_block_type( $stg_namespace , array(
+				    'render_callback' => $stg_php_function,
+				) );
+			}
+			
+		}
 	}
 
 	function generate_gutenberg_blocks_code() {
@@ -111,3 +147,9 @@ class STG_Main {
 }
 
 new STG_Main();
+
+//remove this code 
+
+function pramod_testblock() {
+	
+}

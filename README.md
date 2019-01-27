@@ -13,3 +13,7 @@ It's still work on progress. Following are the items in roadmap ahead:
 3. Repeated fields
 4. Code generator
 5. If block is closed, then it should remain closed 
+
+
+## Contributing to Gutenberg Block Builder
+If you have a patch or idea to improve Gutenberg Block Builder, you are welcome to contribute your code. 

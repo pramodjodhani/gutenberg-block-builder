@@ -2,7 +2,7 @@
 A WordPress plugin to Create Gutenberg Blocks with drag and drop form builder. 
 
 ## Demo
-[![Gutenberg Block Buildler](https://image.prntscr.com/image/xe0-kJ5HQoOns5YjevmTjQ.png)](https://www.youtube.com/watch?v=PDD8nHuLEWE)
+[![Gutenberg Block Buildler](https://image.prntscr.com/image/xe0-kJ5HQoOns5YjevmTjQ.png)](https://www.youtube.com/watch?v=ONYTtiAn9NU&feature=youtu.be)
 
 
 

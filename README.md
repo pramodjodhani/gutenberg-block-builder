@@ -1,4 +1,4 @@
-# gutenberg-block-builder
+# Gutenberg Block Builder
 A WordPress plugin to Create Gutenberg Blocks with drag and drop form builder. 
 
 ## Demo

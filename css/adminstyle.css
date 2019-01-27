@@ -10,6 +10,10 @@
 }
 
 
+.gts_hide_img {
+    display: none;
+}
+
 .form-group.required-wrap ,
 .form-group.access-wrap ,
 .form-group.description-wrap ,
@@ -67,7 +71,7 @@ span.stg_toggle_icon {
 .stg_single_row input[type=password], 
 .stg_single_row input[type=number], 
 .stg_single_row input[type=email] {
-    width: 150px;
+    width: 200px;
 }
 
 .stg_error {
@@ -102,4 +106,10 @@ p.stg_heading {
 .checkbox-group .fb-checkbox label {
     display: inline;
     
+}
+
+.stg_select,
+.stg_textarea,
+.stg_text {
+    display: block;    
 }

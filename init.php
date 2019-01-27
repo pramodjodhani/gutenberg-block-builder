@@ -49,14 +49,33 @@ class STG_Main {
 	}
 
 	function register_gutenblock_posttype() {
+		$labels = array(
+			'name'               =>  'GutenBlock', 
+			'singular_name'      =>  'GutenBlock', 
+			'menu_name'          =>  'GutenBlocks',
+			'name_admin_bar'     =>  'Gutenberg Block', 
+			'add_new'            =>  'Add New Block',
+			'add_new_item'       =>  'Add New Gutenberg Block',
+			'new_item'           =>  'New Gutenberg Block', 
+			'edit_item'          =>  'Edit Gutenberg Block',
+			'view_item'          =>  'View Gutenberg Block', 
+			'all_items'          =>  'All Blocks', 
+			'search_items'       =>  'Search Blocks', 
+			'parent_item_colon'  =>  'Parent Block:', 
+			'not_found'          =>  'No Blocks found.',
+			'not_found_in_trash' =>  'No Blocks found in Trash.',
+		);
+
 		$args = array(
 			'label'             => "Guten Block",
+			'labels'             => $labels,
 	        'description'        => 'Create Guten block from shortcodes',
 			'public'             => false,
 			'publicly_queryable' => false,
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'query_var'          => true,
+			'menu_icon'			 => 'dashicons-editor-table',
 			//'rewrite'            => array( 'slug' => 'book' ),
 			'capability_type'    => 'post',
 			'has_archive'        => false,
@@ -97,19 +116,25 @@ class STG_Main {
 
 	function generate_gutenberg_blocks_code() {
 
-		$qry = new WP_Query(array(
-							"post_type"=>"gutenblock",
-							"posts_per_page" => 20,
-							"post_status" => "publish"
-						));
+		global $current_screen;
+	    if (!isset($current_screen)) {$current_screen = get_current_screen();}
+    	if ( ( method_exists($current_screen, 'is_block_editor') && $current_screen->is_block_editor() )
+      		|| ( function_exists('is_gutenberg_page')) && is_gutenberg_page()  ) {
+	    
+			$qry = new WP_Query(array(
+								"post_type"=>"gutenblock",
+								"posts_per_page" => 20,
+								"post_status" => "publish"
+							));
 
-		while($qry->have_posts()) {
-			$qry->the_post();
+			while($qry->have_posts()) {
+				$qry->the_post();
 
 
-			$this->handle_single_block_post(get_the_ID());
+				$this->handle_single_block_post(get_the_ID());
 
-			
+				
+			}
 		}
 
 	}
@@ -148,8 +173,3 @@ class STG_Main {
 
 new STG_Main();
 
-//remove this code 
-
-function pramod_testblock() {
-	
-}

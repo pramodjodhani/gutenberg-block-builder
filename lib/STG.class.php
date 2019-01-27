@@ -105,9 +105,9 @@ class Shortcode_guten {
 
 			$ret .= $this->_get_edit_onchange_fn();
 			
-			$el_generated_by_very_complex = $this->_get_edit_elements();
+			$el_generated_by_very_complex_logic = $this->_get_edit_elements();
 
-			$ret .= "
+			/*$ret .= "
 					if(!props.isSelected) {
 						
 						return(
@@ -123,7 +123,9 @@ class Shortcode_guten {
 					else {
 						$el_generated_by_very_complex
 					}
-					";
+					";*/
+
+			$ret .= $el_generated_by_very_complex_logic;		
 
 
 		}
@@ -324,14 +326,14 @@ class Shortcode_guten {
 			if($field->type == "text") {
 
 				$ret .= ',el( "b" , {class: "stg_sub_heading"} , "'.$field->label.'" , 
-							el("input", { type: "'.$field->subtype.'", value: '.$field->name.', onChange: '.$function_name.', class: "'.$field->className.'"})
+							el("input", { type: "'.$field->subtype.'", value: '.$field->name.', onChange: '.$function_name.', class: "stg_text '.$field->className.'"})
 							)
 							';
 				
 			}
 			else if($field->type == "textarea") {
 				$ret .= ', el( "b" , {class: "stg_sub_heading"} , "'.$field->label.'" ,
-					el("textarea", {  onChange: '.$function_name.' } , '.$field->name.'),
+					el("textarea", {  onChange: '.$function_name.' , class:"stg_textarea" } , '.$field->name.'),
 					)
 					';
 
@@ -342,7 +344,7 @@ class Shortcode_guten {
 				$value = $this->_get_value_of_select($field);
 
 				$ret .= ', el( "b" , {class: "stg_sub_heading"} , "'.$field->label.'" ,
-							el("select", {  value: '.$field->name.' ,onChange: '.$function_name.' , }  '.$options.') 
+							el("select", {  value: '.$field->name.' ,onChange: '.$function_name.' , class:"stg_select" }  '.$options.') 
 							)
 							';
 
@@ -365,7 +367,7 @@ class Shortcode_guten {
 										onSelect: ( media ) => {$function_name}( media ),
 										render: ( { open } ) =>  el('div' , {class: 'gts_media'} , 
 																		el(wp.components.Button, {onClick: open} , 'Select File'),
-																		el('img', {width: '100' , class: 'gst_media_img '+ (!{$field->name}.id)?'gts_hide_img':'' , style: {width: 50, height: 50, } , src: {$field->name}.url  } )
+																		el('img', {width: '100' , class: ({$field->name}.id)?'gts_media_img ':'gts_media_img  gts_hide_img' , style: {width: 50, height: 50, } , src: {$field->name}.url  } )
 																	),
 										multiple: false,
 										value: {$field->name}.id				

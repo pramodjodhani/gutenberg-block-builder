@@ -42,8 +42,9 @@ function STG_display_callback($post) {
 			<div class="stg_single_row">
 				<label >
 					Dashicon <br>
-					<input type="text" name="stg_dashicon" class="stg_dashicon  dashicons-picker" required="" value="<?php echo $stg_dashicon; ?>" Placeholder="dashicons-universal-access"    /> <br>
-					<span class="stg_desc stg_namespace_error">See all dashicons <a href="https://developer.wordpress.org/resource/dashicons/" target=_blank>here</a>.</span>
+					<input type="text" name="stg_dashicon" class="stg_dashicon  dashicons-picker" required="" value="<?php echo $stg_dashicon; ?>" Placeholder="dashicons-universal-access"  id="stg_dashicons_picker"  /> 
+					<input class="button dashicons-picker" type="button" value="Choose Icon" data-target="#stg_dashicons_picker" />
+
 				</label>	
 			</div>
 
